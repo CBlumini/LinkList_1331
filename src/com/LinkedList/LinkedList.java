@@ -2,8 +2,9 @@ package com.LinkedList;
 
 import com.List.List;
 import com.Node.Node;
-
-public class LinkedList<T> implements List {
+//https://stackoverflow.com/questions/15442508/interface-and-a-class-name-clash-same-erasure-yet-neither-overrides-other
+//needed the above to avoid an erasure error
+public class LinkedList<T> implements List<T> {
 
 
     private Node<T> head;
@@ -17,66 +18,68 @@ public class LinkedList<T> implements List {
 
     //https://farenda.com/algorithms/linked-list-insert-element-at-position/
     @Override
-    public void addAtIndex(Object data, int index) {
-        if (index < 0 || index<size-1) {
-            throw new IllegalArgumentException();
+    public void addAtIndex(T data, int index) {
+        if (index < 0 || index>size) {
+            throw new IllegalArgumentException("You cannot add null data to the list");
         }
 
-        //add to the front
-        if (index ==0) {
-            head = new Node <T> ((T) data, head);
+        //if the first element in the list
+        if (size == 0) {
+            head = new Node<T>(data);
+            tail = head;
             size++;
-            /*
-            Node<T> newNode = new Node <> ((T) data);
-            newNode.setNext(head);
-            head = newNode;
-            */
-        } else {
+        }
+
+        //add to the front once the first node is created
+        if (index == 0) {
+            head = new Node <T> (data, head);
+            size++;
+
+        } else { //add to other locations
+            //create a temporary node that equals the head
             Node<T> temp = head;
+            //cycle through the list to get to the location
+            //check this for fencepost errors
             while (--index>0) {
                 temp = temp.getNext();
             }
-            Node<T> newNode = new Node <T> ((T)data);
+            //add the data that was passed in to a newNode
+            Node<T> newNode = new Node <T> (data);
+            //point the new node to the value that the lookup node was pointing to
             newNode.setNext(temp.getNext());
+            //set the pointer (the upstream part of the list to look at the new node
             temp.setNext(newNode);
             size++;
-            //newNode.setNext(head);
-            //head = newNode;
         }
 
     }
 
     @Override
-    public Object getAtIndex(int index) {
-        Node<T> temp = head;
-        int count = 0;
-        if (index < 0 || index<size-1) {
-            throw new IllegalArgumentException();
+    public T getAtIndex(int index) {
+        if (index < 0 || index > size-1) {
+            throw new IllegalArgumentException("Your index is out of the list bounds");
         }
 
-        for (int i = 0; i < index-1; i++) {
+        //create a temporary node at the head
+        Node<T> temp = head;
+
+        //cycle through the list to get to the location
+        //check this for fencepost errors
+        while (--index>0) {
             temp = temp.getNext();
         }
+
         return temp.getData();
-
-        /*while (temp != null) {
-            if (count == index) {
-                return temp.getData();
-                }
-                count++;
-                temp = temp.getNext();
-            }
-
-
-        assert(false);
-        return 0;
-        */
     }
 
 
 //https://www.geeksforgeeks.org/delete-a-linked-list-node-at-a-given-position/?ref=lbp
     @Override
-    public Object removeAtIndex(int index) {
+    public T removeAtIndex(int index) {
+        if (index < 0 || index > size-1) {
+            throw new IllegalArgumentException("Your index is out of bounds");
+        }
+
         Node<T> temp = head;
         if (index == 0) {
             T removedData = head.getData();
@@ -97,7 +100,10 @@ public class LinkedList<T> implements List {
     }
 
     @Override
-    public Object remove(Object data) {
+    public T remove(T data) {
+        if (data == null) {
+            throw new IllegalArgumentException("You cannot remove null data from the list");
+        }
         Node<T> temp = head;
         Node<T> prev = null;
 
