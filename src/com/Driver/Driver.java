@@ -7,12 +7,10 @@ public class Driver {
         LinkedList <Integer> testList = new LinkedList<>();
 
         testList.addAtIndex(1, 0);
-        testList.addAtIndex(2, 0);
-        testList.addAtIndex(3, 0);
-        testList.addAtIndex(4, 0);
-        testList.addAtIndex(5, 0);
-        testList.addAtIndex(5, 5);
-        //testList.removeAtIndex(0);
+        testList.addAtIndex(1, 0);
+        testList.addAtIndex(1, 1);
+        testList.removeAtIndex(0);
+        testList.removeAtIndex(0);
 
 
 

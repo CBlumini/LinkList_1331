@@ -2,6 +2,9 @@ package com.LinkedList;
 
 import com.List.List;
 import com.Node.Node;
+
+import java.util.NoSuchElementException;
+
 //https://stackoverflow.com/questions/15442508/interface-and-a-class-name-clash-same-erasure-yet-neither-overrides-other
 //needed the above to avoid an erasure error
 public class LinkedList<T> implements List<T> {
@@ -49,7 +52,7 @@ public class LinkedList<T> implements List<T> {
             //set the pointer (the upstream part of the list to look at the new node
             temp.setNext(newNode);
             //if adding at the end (tail)
-        } else {
+        } else if (index == size && size !=0){
             //create a new node for the data
             Node<T> newNode = new Node <T> (data);
             //point the existing tail to the new node
@@ -133,7 +136,7 @@ public class LinkedList<T> implements List<T> {
             prev = temp;
             temp = temp.getNext();
         }
-
+        size--;
         return null;
     }
 
